@@ -1,0 +1,118 @@
+Chat gpt link - https://chatgpt.com/c/67ef2a9e-07fc-8001-9f15-f89dc3f9ddee
+
+
+
+Schema
+
+Users
+    user_id (PK)
+    name
+    email (unique)
+    phone
+    password
+    user_type (customer, seller, admin)
+    created_at
+
+Sellers
+    seller_id (PK, FK → Users.user_id)
+    company_name
+    gst_number
+    rating
+
+Categories
+    category_id (PK)
+    name
+    parent_category_id (FK → Categories.category_id, nullable for root categories)
+
+Products
+    product_id (PK)
+    name
+    description
+    price
+    brand
+    category_id (FK → Categories.category_id)
+    seller_id (FK → Sellers.seller_id)
+    created_at
+
+Inventory
+    inventory_id (PK)
+    product_id (FK → Products.product_id)
+    quantity_available
+    warehouse_location
+
+Cart
+    cart_id (PK)
+    user_id (FK → Users.user_id)
+    created_at
+
+Cart_Items
+    cart_item_id (PK)
+    cart_id (FK → Cart.cart_id)
+    product_id (FK → Products.product_id)
+    quantity
+
+Orders
+    order_id (PK)
+    user_id (FK → Users.user_id)
+    order_date
+    status (pending, shipped, delivered, cancelled)
+    total_amount
+    shipping_address_id (FK → Shipping_Address.address_id)
+    payment_id (FK → Payments.payment_id)
+
+Order_Items
+    order_item_id (PK)
+    order_id (FK → Orders.order_id)
+    product_id (FK → Products.product_id)
+    quantity
+    price_at_purchase
+
+Shipping_Address
+    address_id (PK)
+    user_id (FK → Users.user_id)
+    address_line1
+    address_line2
+    city
+    state
+    pincode
+    country
+
+Payments
+    payment_id (PK)
+    user_id (FK → Users.user_id)
+    amount
+    payment_method (card, UPI, netbanking)
+    payment_status (success, failed, pending)
+    payment_date
+
+Reviews
+    review_id (PK)
+    product_id (FK → Products.product_id)
+    user_id (FK → Users.user_id)
+    rating (1 to 5)
+    comment
+    created_at
+
+Wishlist
+    wishlist_id (PK)
+    user_id (FK → Users.user_id)
+
+Wishlist_Items
+    wishlist_item_id (PK)
+    wishlist_id (FK → Wishlist.wishlist_id)
+    product_id (FK → Products.product_id)
+
+Coupons
+    coupon_id (PK)
+    code
+    description
+    discount_percentage
+    valid_from
+    valid_to
+    max_uses
+    min_order_amount
+
+Order_Coupons
+    order_coupon_id (PK)
+    order_id (FK → Orders.order_id)
+    coupon_id (FK → Coupons.coupon_id)
